@@ -1,0 +1,20 @@
+{
+  "name": "@manufacturing-app/functions",
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "test": "sst bind vitest",
+    "typecheck": "tsc -noEmit"
+  },
+  "devDependencies": {
+    "@manufacturing-app/core": "^0.0.0 ",
+    "@types/aws-lambda": "^8.10.131",
+    "@types/node": "^20.11.4",
+    "sst": "^2.39.6",
+    "vitest": "^1.2.0"
+  },
+  "dependencies": {
+    "@trpc/server": "^10.45.0",
+    "zod": "^3.22.4"
+  }
+}

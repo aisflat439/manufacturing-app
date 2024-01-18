@@ -1,0 +1,20 @@
+{
+  "name": "@manufacturing-app/core",
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "test": "sst bind vitest",
+    "typecheck": "tsc -noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.4",
+    "sst": "^2.39.6",
+    "vitest": "^1.2.0"
+  },
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.490.0",
+    "electrodb": "^2.13.0",
+    "ulid": "^2.3.0",
+    "zod": "^3.22.4"
+  }
+}
