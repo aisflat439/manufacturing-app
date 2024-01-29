@@ -1,13 +1,31 @@
-import React from "react";
 import ReactDOM from "react-dom/client";
-import { RouterProvider, Router } from "@tanstack/react-router";
+import { Router } from "@tanstack/react-router";
+import { QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { routeTree } from "./routeTree.gen";
+import { ToastContainer } from "react-toastify";
 import "./index.css";
+import "react-toastify/dist/ReactToastify.min.css";
+
+import { queryClient, trpc, trpcClient } from "./utils/trpc";
+import { AuthProvider } from "./providers/auth";
+import { AuthConsumer } from "./providers/AuthConsumer";
 
 // Set up a Router instance
-const router = new Router({
+export const router = new Router({
   routeTree,
   defaultPreload: "intent",
+  context: {
+    auth: {
+      user: null,
+      setUser: () => {},
+      isAuth: false,
+    },
+    search: {
+      redirect: "",
+      token: "",
+    },
+  },
 });
 
 // Register things for typesafety
@@ -21,5 +39,15 @@ const rootElement = document.getElementById("root")!;
 
 if (!rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement);
-  root.render(<RouterProvider router={router} />);
+  root.render(
+    <trpc.Provider client={trpcClient} queryClient={queryClient}>
+      <QueryClientProvider client={queryClient}>
+        <AuthProvider>
+          <AuthConsumer />
+          <ToastContainer />
+        </AuthProvider>
+        <ReactQueryDevtools position={"right"} />
+      </QueryClientProvider>
+    </trpc.Provider>
+  );
 }

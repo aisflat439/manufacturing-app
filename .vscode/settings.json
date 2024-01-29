@@ -1,5 +1,11 @@
 {
   "search.exclude": {
     "**/.sst": true
-  }
+  },
+  "workbench.colorCustomizations": {
+    "titleBar.activeBackground": "#0c9744",
+    "titleBar.inactiveBackground": "#0c9744",
+    "titleBar.inactiveForeground": "#5dc386",
+    "titleBar.activeForeground": "#5dc386",
+  },
 }

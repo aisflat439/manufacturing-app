@@ -3,10 +3,23 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as PartsImport } from './routes/parts'
+import { Route as LoginImport } from './routes/login'
 import { Route as AboutImport } from './routes/about'
 import { Route as IndexImport } from './routes/index'
+import { Route as PartsIndexImport } from './routes/parts.index'
 
 // Create/Update Routes
+
+const PartsRoute = PartsImport.update({
+  path: '/parts',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const LoginRoute = LoginImport.update({
+  path: '/login',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const AboutRoute = AboutImport.update({
   path: '/about',
@@ -16,6 +29,11 @@ const AboutRoute = AboutImport.update({
 const IndexRoute = IndexImport.update({
   path: '/',
   getParentRoute: () => rootRoute,
+} as any)
+
+const PartsIndexRoute = PartsIndexImport.update({
+  path: '/',
+  getParentRoute: () => PartsRoute,
 } as any)
 
 // Populate the FileRoutesByPath interface
@@ -30,9 +48,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutImport
       parentRoute: typeof rootRoute
     }
+    '/login': {
+      preLoaderRoute: typeof LoginImport
+      parentRoute: typeof rootRoute
+    }
+    '/parts': {
+      preLoaderRoute: typeof PartsImport
+      parentRoute: typeof rootRoute
+    }
+    '/parts/': {
+      preLoaderRoute: typeof PartsIndexImport
+      parentRoute: typeof PartsImport
+    }
   }
 }
 
 // Create and export the route tree
 
-export const routeTree = rootRoute.addChildren([IndexRoute, AboutRoute])
+export const routeTree = rootRoute.addChildren([
+  IndexRoute,
+  AboutRoute,
+  LoginRoute,
+  PartsRoute.addChildren([PartsIndexRoute]),
+])

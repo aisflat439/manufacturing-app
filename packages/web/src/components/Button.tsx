@@ -1,108 +1,126 @@
-import { motion } from "framer-motion";
-
 type Variant = "create" | "update" | "delete" | "inform" | "select" | "action";
 
-type Modification = "contained" | "outlined" | "text";
-
-interface IButton {
+type ButtonProps = {
   children: React.ReactNode;
   className?: string;
   disabled?: boolean;
-  modification?: Modification;
-  onClick?: () => void;
-  type?: "button" | "submit" | "reset";
+  modification?: "contained" | "outlined" | "text";
   size?: "small" | "medium" | "large";
+  type?: "button" | "submit" | "reset";
   variant?: Variant;
-}
+} & (
+  | {
+      as?: "button";
+      href?: never;
+      onClick: () => void;
+    }
+  | {
+      as: "link";
+      href: string;
+      onClick?: undefined;
+    }
+  | {
+      as?: "button";
+      href?: never;
+      type: "submit";
+      onClick?: never;
+    }
+);
 
 export const Button = ({
+  as = "button",
   children,
   className,
   disabled = false,
   type,
+  href,
   variant = "create",
   modification = "contained",
-  onClick,
+  onClick = () => {},
   size = "medium",
-}: IButton) => {
+}: ButtonProps) => {
   const variantStyles = {
-    create: {
-      base: "green-500",
-      hover: "green-600",
-      text: "white",
-      hoverText: "white",
+    action: {
+      contained: "bg-purple-500 hover:bg-purple-600 text-white",
+      outlined:
+        "border-2 border-purple-500 bg-white text-purple-500 hover:bg-purple-600 text-white",
+      text: "text-purple-500 hover:text-purple-600",
     },
-    update: {
-      base: "yellow-500",
-      hover: "yellow-600",
-      text: "white",
-      hoverText: "white",
+    create: {
+      contained: `
+        bg-green-500 hover:bg-green-600 
+        text-white
+      `,
+      outlined: `
+        border-2 
+        border-green-500 hover:border-green-600
+        bg-white hover:bg-green-600 
+        text-green-500 hover:text-white
+      `,
+      text: `
+        text-green-500 hover:text-green-600
+      `,
     },
     delete: {
-      base: "red-500",
-      hover: "red-600",
-      text: "white",
-      hoverText: "white",
+      contained: "bg-red-500 hover:bg-red-600 text-white",
+      outlined:
+        "border-2 border-red-500 bg-white text-red-500 hover:bg-red-600 text-white",
+      text: "text-red-500 hover:text-red-600",
     },
     inform: {
-      base: "gray-500",
-      hover: "gray-600",
-      text: "white",
-      hoverText: "white",
+      contained: "bg-gray-500 hover:bg-gray-600 text-white",
+      outlined:
+        "border-2 border-gray-500 bg-white text-gray-500 hover:bg-gray-600 text-white",
+      text: "text-gray-500 hover:text-gray-600",
     },
     select: {
-      base: "blue-500",
-      hover: "blue-600",
-      text: "blue-500",
-      hoverText: "white",
+      contained: `
+        bg-blue-500 hover:bg-blue-600 
+        text-white
+      `,
+      outlined: `
+        border-2
+        border-blue-500 
+        bg-white hover:bg-blue-600
+        text-blue-500 hover:text-white
+      `,
+      text: `
+        text-blue-500 hover:text-blue-600
+      `,
     },
-    action: {
-      base: "blue-500",
-      hover: "blue-600",
-      text: "white",
-      hoverText: "white",
+    update: {
+      contained: "bg-yellow-500 hover:bg-yellow-600 text-white",
+      outlined:
+        "border-2 border-yellow-500 bg-white text yellow-500 hover:bg-yellow-600 text-white",
+      text: "text-yellow-500 hover:text-yellow-600",
     },
   } as const;
 
-  // prettier-ignore
-  const modificationStyles = {
-    contained: `bg-${variantStyles[variant].base} 
-                hover:bg-${variantStyles[variant].hover} 
-                text-${variantStyles[variant].text}
-                hover:text-${variantStyles[variant].hoverText}`,
-    outlined:  `border-2 rounded border-${variantStyles[variant].base} 
-                hover:bg-${variantStyles[variant].hover} 
-                text-${variantStyles[variant].text}
-                hover:text-${variantStyles[variant].hoverText}`,
-    text:      `text-${variantStyles[variant].base} 
-                hover:bg-${variantStyles[variant].hover} 
-                text-${variantStyles[variant].text}
-                hover:text-${variantStyles[variant].hoverText}`,
-  };
-
   const sizeStyles = {
-    small: "px-2 py-1 text-xs",
-    medium: "px-4 py-2 text-sm",
     large: "px-6 py-3 text-base",
+    medium: "px-4 py-2 text-sm",
+    small: "px-2 py-1 text-xs",
   };
 
-  const classes = `${sizeStyles[size]} ${modificationStyles[modification]} ${className} ${
+  const classes = `${sizeStyles[size]} ${variantStyles[variant][modification]} ${className} ${
     disabled && " opacity-60"
   }`;
+  // [--color-from:theme(colors.green.800)]
+  // [--color-to:theme(colors.green.300)]
+  // bg-green-300
 
-  return (
-    <motion.button
+  return as === "button" ? (
+    <button
       onClick={onClick}
-      whileHover={
-        disabled
-          ? {}
-          : { scale: 0.98, backgroundColor: variantStyles[variant].hover }
-      }
       className={classes}
       type={type}
       disabled={disabled}
     >
       {children}
-    </motion.button>
+    </button>
+  ) : (
+    <a className={classes} href={href} rel="noreferrer">
+      {children}
+    </a>
   );
 };

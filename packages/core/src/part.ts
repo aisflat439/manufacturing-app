@@ -2,6 +2,9 @@ export * as Part from "./part";
 import { Dynamo } from "./dynamo";
 import { Entity, EntityItem } from "electrodb";
 import { ulid } from "ulid";
+import { ZodEnum, z } from "zod";
+
+const packSizeEnum = ["each", "pack"] as const;
 
 export const PartEntity = new Entity(
   {
@@ -18,6 +21,17 @@ export const PartEntity = new Entity(
       name: {
         type: "string",
         required: true,
+      },
+      price: {
+        type: "string",
+      },
+      quantity: {
+        type: "number",
+      },
+      packSize: {
+        type: "string",
+        required: true,
+        enum: packSizeEnum,
       },
     },
     indexes: {
@@ -39,10 +53,23 @@ export const PartEntity = new Entity(
 
 export type PartEntityType = EntityItem<typeof PartEntity>;
 
-export async function createPart(name: string) {
+export const PartEntitySchema = z.object({
+  partId: z.string(),
+  name: z.string(),
+  price: z.string().optional(),
+  quantity: z.number().optional(),
+  packSize: z.enum(packSizeEnum),
+});
+
+export type CreateSchema = z.infer<typeof PartEntitySchema>;
+
+export async function createPart(data: CreateSchema) {
   return PartEntity.create({
-    name,
-    partId: ulid(),
+    name: data.name,
+    partId: data.partId,
+    price: data?.price || "0.00",
+    quantity: data.quantity || 0,
+    packSize: data.packSize,
   }).go();
 }
 

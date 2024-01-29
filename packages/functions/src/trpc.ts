@@ -6,6 +6,7 @@ import { z } from "zod";
 export const t = initTRPC.create();
 
 import {
+  PartEntitySchema,
   createPart,
   deletePart,
   listParts,
@@ -13,16 +14,12 @@ import {
 } from "@manufacturing-app/core/src/part";
 
 const appRouter = t.router({
-  create: t.procedure
-    .input(
-      z.object({
-        title: z.string(),
-        teamId: z.string(),
-      })
-    )
-    .mutation(async ({ input }) => {
-      return await createPart(input.title);
-    }),
+  getUser: t.procedure.input(z.string()).query(async ({ input }) => {
+    return { id: input, name: "bob" };
+  }),
+  create: t.procedure.input(PartEntitySchema).mutation(async ({ input }) => {
+    return await createPart(input);
+  }),
   update: t.procedure.input(z.string()).mutation(async ({ input }) => {
     return await updatePart(input);
   }),

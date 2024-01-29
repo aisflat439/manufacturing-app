@@ -10,6 +10,11 @@ export function Api({ stack }: StackContext) {
   const api = new ApiGateway(stack, "api", {
     customDomain:
       stack.stage === "production" ? `api.${dns.domain}` : undefined,
+    defaults: {
+      function: {
+        bind: [db],
+      },
+    },
     routes: {
       "GET /trpc/{proxy+}": "packages/functions/src/trpc.handler",
       "POST /trpc/{proxy+}": "packages/functions/src/trpc.handler",
