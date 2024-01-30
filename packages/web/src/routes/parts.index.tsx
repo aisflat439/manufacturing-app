@@ -1,13 +1,13 @@
-import { FileRoute, RouteApi } from "@tanstack/react-router";
+import { FileRoute, Link, RouteApi } from "@tanstack/react-router";
 
 import { apiUtils, trpc } from "../utils/trpc";
+import { Button } from "../components/Button";
+import { usePart } from "../hooks/parts";
 
-export const Route = new FileRoute('/parts/').createRoute({
+export const Route = new FileRoute("/parts/").createRoute({
   loader: async ({ context }) => {
     const user = context.auth.user!;
     const res = await apiUtils.read.ensureData(user);
-    console.log("res: ", res);
-    // const res = { name: "test" };
     return {
       res,
       user,
@@ -23,6 +23,7 @@ function PartsIndexComponent() {
   const { data: partsData } = trpc.read.useQuery(user, {
     initialData: serverPartsData,
   });
+  const { handleDeletePart } = usePart();
 
   return (
     <div className="p-2">
@@ -30,7 +31,16 @@ function PartsIndexComponent() {
         {partsData.data.map((part) => {
           return (
             <div key={part.partId + part.name}>
-              <p>{part.name}</p>
+              <p>
+                <Link to={part.partId}>{part.name}</Link>
+                <Button
+                  variant="delete"
+                  modification="text"
+                  onClick={() => handleDeletePart(part.partId)}
+                >
+                  Delete
+                </Button>
+              </p>
             </div>
           );
         })}

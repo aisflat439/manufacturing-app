@@ -12,7 +12,7 @@ type ButtonProps = {
   | {
       as?: "button";
       href?: never;
-      onClick: () => void;
+      onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
     }
   | {
       as: "link";

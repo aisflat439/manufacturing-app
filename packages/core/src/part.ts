@@ -23,7 +23,7 @@ export const PartEntity = new Entity(
         required: true,
       },
       price: {
-        type: "string",
+        type: "number",
       },
       quantity: {
         type: "number",
@@ -56,7 +56,7 @@ export type PartEntityType = EntityItem<typeof PartEntity>;
 export const PartEntitySchema = z.object({
   partId: z.string(),
   name: z.string(),
-  price: z.string().optional(),
+  price: z.number().optional(),
   quantity: z.number().optional(),
   packSize: z.enum(packSizeEnum),
 });
@@ -67,7 +67,7 @@ export async function createPart(data: CreateSchema) {
   return PartEntity.create({
     name: data.name,
     partId: data.partId,
-    price: data?.price || "0.00",
+    price: data?.price || 0.0,
     quantity: data.quantity || 0,
     packSize: data.packSize,
   }).go();
