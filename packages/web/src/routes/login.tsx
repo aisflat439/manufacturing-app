@@ -4,7 +4,7 @@ import { z } from "zod";
 import React from "react";
 import { Button } from "../components/Button";
 
-export const Route = new FileRoute('/login').createRoute({
+export const Route = new FileRoute("/login").createRoute({
   component: LoginComponent,
   validateSearch: z.object({
     redirect: z.string().optional(),

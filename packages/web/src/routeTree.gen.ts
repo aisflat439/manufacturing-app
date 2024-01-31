@@ -3,17 +3,22 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as PartsImport } from './routes/parts'
+import { Route as ProductsImport } from './routes/products'
 import { Route as LoginImport } from './routes/login'
 import { Route as AboutImport } from './routes/about'
 import { Route as IndexImport } from './routes/index'
-import { Route as PartsIndexImport } from './routes/parts.index'
-import { Route as PartsPartIdImport } from './routes/parts.$partId'
+import { Route as ProductsIndexImport } from './routes/products.index'
+import { Route as ProductsPartsImport } from './routes/products.parts'
+import { Route as ProductsModulesImport } from './routes/products.modules'
+import { Route as ProductsPartsIndexImport } from './routes/products.parts.index'
+import { Route as ProductsModulesIndexImport } from './routes/products.modules.index'
+import { Route as ProductsPartsPartIdImport } from './routes/products.parts.$partId'
+import { Route as ProductsModulesModuleImport } from './routes/products.modules.$module'
 
 // Create/Update Routes
 
-const PartsRoute = PartsImport.update({
-  path: '/parts',
+const ProductsRoute = ProductsImport.update({
+  path: '/products',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -32,14 +37,39 @@ const IndexRoute = IndexImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const PartsIndexRoute = PartsIndexImport.update({
+const ProductsIndexRoute = ProductsIndexImport.update({
   path: '/',
-  getParentRoute: () => PartsRoute,
+  getParentRoute: () => ProductsRoute,
 } as any)
 
-const PartsPartIdRoute = PartsPartIdImport.update({
+const ProductsPartsRoute = ProductsPartsImport.update({
+  path: '/parts',
+  getParentRoute: () => ProductsRoute,
+} as any)
+
+const ProductsModulesRoute = ProductsModulesImport.update({
+  path: '/modules',
+  getParentRoute: () => ProductsRoute,
+} as any)
+
+const ProductsPartsIndexRoute = ProductsPartsIndexImport.update({
+  path: '/',
+  getParentRoute: () => ProductsPartsRoute,
+} as any)
+
+const ProductsModulesIndexRoute = ProductsModulesIndexImport.update({
+  path: '/',
+  getParentRoute: () => ProductsModulesRoute,
+} as any)
+
+const ProductsPartsPartIdRoute = ProductsPartsPartIdImport.update({
   path: '/$partId',
-  getParentRoute: () => PartsRoute,
+  getParentRoute: () => ProductsPartsRoute,
+} as any)
+
+const ProductsModulesModuleRoute = ProductsModulesModuleImport.update({
+  path: '/$module',
+  getParentRoute: () => ProductsModulesRoute,
 } as any)
 
 // Populate the FileRoutesByPath interface
@@ -58,17 +88,37 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginImport
       parentRoute: typeof rootRoute
     }
-    '/parts': {
-      preLoaderRoute: typeof PartsImport
+    '/products': {
+      preLoaderRoute: typeof ProductsImport
       parentRoute: typeof rootRoute
     }
-    '/parts/$partId': {
-      preLoaderRoute: typeof PartsPartIdImport
-      parentRoute: typeof PartsImport
+    '/products/modules': {
+      preLoaderRoute: typeof ProductsModulesImport
+      parentRoute: typeof ProductsImport
     }
-    '/parts/': {
-      preLoaderRoute: typeof PartsIndexImport
-      parentRoute: typeof PartsImport
+    '/products/parts': {
+      preLoaderRoute: typeof ProductsPartsImport
+      parentRoute: typeof ProductsImport
+    }
+    '/products/': {
+      preLoaderRoute: typeof ProductsIndexImport
+      parentRoute: typeof ProductsImport
+    }
+    '/products/modules/$module': {
+      preLoaderRoute: typeof ProductsModulesModuleImport
+      parentRoute: typeof ProductsModulesImport
+    }
+    '/products/parts/$partId': {
+      preLoaderRoute: typeof ProductsPartsPartIdImport
+      parentRoute: typeof ProductsPartsImport
+    }
+    '/products/modules/': {
+      preLoaderRoute: typeof ProductsModulesIndexImport
+      parentRoute: typeof ProductsModulesImport
+    }
+    '/products/parts/': {
+      preLoaderRoute: typeof ProductsPartsIndexImport
+      parentRoute: typeof ProductsPartsImport
     }
   }
 }
@@ -79,5 +129,15 @@ export const routeTree = rootRoute.addChildren([
   IndexRoute,
   AboutRoute,
   LoginRoute,
-  PartsRoute.addChildren([PartsPartIdRoute, PartsIndexRoute]),
+  ProductsRoute.addChildren([
+    ProductsModulesRoute.addChildren([
+      ProductsModulesModuleRoute,
+      ProductsModulesIndexRoute,
+    ]),
+    ProductsPartsRoute.addChildren([
+      ProductsPartsPartIdRoute,
+      ProductsPartsIndexRoute,
+    ]),
+    ProductsIndexRoute,
+  ]),
 ])

@@ -17,6 +17,9 @@ const appRouter = t.router({
   getUser: t.procedure.input(z.string()).query(async ({ input }) => {
     return { id: input, name: "bob" };
   }),
+  getPart: t.procedure.input(z.string()).query(async ({ input }) => {
+    return { id: input, name: "bob" };
+  }),
   create: t.procedure.input(PartEntitySchema).mutation(async ({ input }) => {
     return await createPart(input);
   }),

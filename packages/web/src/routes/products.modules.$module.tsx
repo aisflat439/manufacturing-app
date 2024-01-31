@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-export const Route = createFileRoute("/parts/$partId")({
+export const Route = createFileRoute("/products/modules/$module")({
   component: PartComponent,
 });
 

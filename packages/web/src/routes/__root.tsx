@@ -1,12 +1,9 @@
-import {
-  Link,
-  Outlet,
-  redirect,
-  rootRouteWithContext,
-} from "@tanstack/react-router";
+import { Outlet, redirect, rootRouteWithContext } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/router-devtools";
 import { TAuthContext } from "../providers/auth";
 import { z } from "zod";
+import { Header } from "../components/Header";
+import { LeftNavigation } from "../components/LeftNavigation";
 
 type RouterContext = {
   auth: TAuthContext;
@@ -32,21 +29,14 @@ export const Route = rootRouteWithContext<RouterContext>()({
     }
   },
   component: () => (
-    <>
-      <div className="p-2 flex gap-2">
-        <Link to="/" className="[&.active]:font-bold">
-          Home
-        </Link>{" "}
-        <Link to="/about" className="[&.active]:font-bold">
-          About
-        </Link>
-        <Link to="/parts" className="[&.active]:font-bold">
-          Parts
-        </Link>
+    <div>
+      <Header />
+      <div className="flex min-h-screen">
+        <LeftNavigation />
+        <hr />
+        <Outlet />
       </div>
-      <hr />
-      <Outlet />
       <TanStackRouterDevtools />
-    </>
+    </div>
   ),
 });
