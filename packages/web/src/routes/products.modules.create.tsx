@@ -1,7 +1,6 @@
 import { createFileRoute, getRouteApi, Link } from "@tanstack/react-router";
 import { apiUtils, trpc } from "../utils/trpc";
 import React from "react";
-import { set } from "zod";
 
 export const Route = createFileRoute("/products/modules/create")({
   loader: async ({ context }) => {
