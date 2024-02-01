@@ -36,7 +36,7 @@ function PartsRoute() {
         <span className="ml-6 text-sm text-blue-600">
           <Link
             activeOptions={{ exact: true }}
-            to="/products/parts"
+            to="/products/parts/"
             activeProps={{
               style: {
                 display: "none",

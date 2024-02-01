@@ -9,6 +9,7 @@ import {
   PartEntitySchema,
   createPart,
   deletePart,
+  getPart,
   listParts,
   updatePart,
 } from "@manufacturing-app/core/src/part";
@@ -18,7 +19,7 @@ const appRouter = t.router({
     return { id: input, name: "bob" };
   }),
   getPart: t.procedure.input(z.string()).query(async ({ input }) => {
-    return { id: input, name: "bob" };
+    return await getPart(input);
   }),
   create: t.procedure.input(PartEntitySchema).mutation(async ({ input }) => {
     return await createPart(input);

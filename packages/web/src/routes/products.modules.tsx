@@ -1,4 +1,4 @@
-import { createFileRoute, Outlet } from "@tanstack/react-router";
+import { createFileRoute, Link, Outlet } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/products/modules")({
   component: PartsRoute,
@@ -14,7 +14,17 @@ function PartsRoute() {
 
         <div>
           <div>
-            <p>Create a module</p>
+            <Link
+              activeOptions={{ exact: true }}
+              to="/products/modules/create"
+              activeProps={{
+                style: {
+                  display: "none",
+                },
+              }}
+            >
+              Create a module
+            </Link>
           </div>
         </div>
       </div>

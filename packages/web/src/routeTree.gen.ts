@@ -13,6 +13,7 @@ import { Route as ProductsModulesImport } from './routes/products.modules'
 import { Route as ProductsPartsIndexImport } from './routes/products.parts.index'
 import { Route as ProductsModulesIndexImport } from './routes/products.modules.index'
 import { Route as ProductsPartsPartIdImport } from './routes/products.parts.$partId'
+import { Route as ProductsModulesCreateImport } from './routes/products.modules.create'
 import { Route as ProductsModulesModuleImport } from './routes/products.modules.$module'
 
 // Create/Update Routes
@@ -67,6 +68,11 @@ const ProductsPartsPartIdRoute = ProductsPartsPartIdImport.update({
   getParentRoute: () => ProductsPartsRoute,
 } as any)
 
+const ProductsModulesCreateRoute = ProductsModulesCreateImport.update({
+  path: '/create',
+  getParentRoute: () => ProductsModulesRoute,
+} as any)
+
 const ProductsModulesModuleRoute = ProductsModulesModuleImport.update({
   path: '/$module',
   getParentRoute: () => ProductsModulesRoute,
@@ -108,6 +114,10 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProductsModulesModuleImport
       parentRoute: typeof ProductsModulesImport
     }
+    '/products/modules/create': {
+      preLoaderRoute: typeof ProductsModulesCreateImport
+      parentRoute: typeof ProductsModulesImport
+    }
     '/products/parts/$partId': {
       preLoaderRoute: typeof ProductsPartsPartIdImport
       parentRoute: typeof ProductsPartsImport
@@ -132,6 +142,7 @@ export const routeTree = rootRoute.addChildren([
   ProductsRoute.addChildren([
     ProductsModulesRoute.addChildren([
       ProductsModulesModuleRoute,
+      ProductsModulesCreateRoute,
       ProductsModulesIndexRoute,
     ]),
     ProductsPartsRoute.addChildren([

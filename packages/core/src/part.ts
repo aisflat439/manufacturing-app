@@ -73,6 +73,10 @@ export async function createPart(data: CreateSchema) {
   }).go();
 }
 
+export async function getPart(id: string) {
+  return PartEntity.get({ partId: id }).go();
+}
+
 export async function deletePart(id: string) {
   return PartEntity.delete({
     partId: id,
