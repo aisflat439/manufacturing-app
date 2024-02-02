@@ -11,7 +11,6 @@ function PartsRoute() {
       <p>modules are made up of parts</p>
       <div>
         <Outlet />
-
         <div>
           <div>
             <Link

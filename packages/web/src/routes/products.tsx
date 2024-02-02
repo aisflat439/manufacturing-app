@@ -6,7 +6,7 @@ export const Route = createFileRoute("/products")({
 
 function ProductsDashboard() {
   return (
-    <div className="flex flex-col min-w-full">
+    <div className="flex flex-col w-full">
       <div className="flex items-center border-b">
         <h2 className="text-xl p-2">Products Dashboard</h2>
       </div>

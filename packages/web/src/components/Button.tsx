@@ -4,6 +4,7 @@ type ButtonProps = {
   children: React.ReactNode;
   className?: string;
   disabled?: boolean;
+  id?: string;
   modification?: "contained" | "outlined" | "text";
   size?: "small" | "medium" | "large";
   type?: "button" | "submit" | "reset";
@@ -18,6 +19,7 @@ type ButtonProps = {
       as: "link";
       href: string;
       onClick?: undefined;
+      id?: never;
     }
   | {
       as?: "button";
@@ -32,12 +34,13 @@ export const Button = ({
   children,
   className,
   disabled = false,
-  type,
+  id,
   href,
-  variant = "create",
   modification = "contained",
   onClick = () => {},
   size = "medium",
+  type,
+  variant = "create",
 }: ButtonProps) => {
   const variantStyles = {
     action: {
@@ -111,6 +114,7 @@ export const Button = ({
 
   return as === "button" ? (
     <button
+      id={id}
       onClick={onClick}
       className={classes}
       type={type}
