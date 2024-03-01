@@ -33,6 +33,9 @@ export const PartEntity = new Entity(
         required: true,
         enum: packSizeEnum,
       },
+      moduleId: {
+        type: "string",
+      },
     },
     indexes: {
       part: {
@@ -44,6 +47,18 @@ export const PartEntity = new Entity(
         sk: {
           field: "sk",
           composite: ["partId"],
+        },
+      },
+      module: {
+        collection: ["moduleParts"],
+        index: "gsi1pk-gsi1sk-index",
+        pk: {
+          field: "gsi1pk",
+          composite: ["partId"],
+        },
+        sk: {
+          field: "gsi1sk",
+          composite: ["moduleId"],
         },
       },
     },

@@ -5,6 +5,7 @@
 import { Route as rootRoute } from './routes/__root'
 import { Route as ProductsImport } from './routes/products'
 import { Route as LoginImport } from './routes/login'
+import { Route as HandsImport } from './routes/hands'
 import { Route as AboutImport } from './routes/about'
 import { Route as IndexImport } from './routes/index'
 import { Route as ProductsIndexImport } from './routes/products.index'
@@ -25,6 +26,11 @@ const ProductsRoute = ProductsImport.update({
 
 const LoginRoute = LoginImport.update({
   path: '/login',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const HandsRoute = HandsImport.update({
+  path: '/hands',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -90,6 +96,10 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutImport
       parentRoute: typeof rootRoute
     }
+    '/hands': {
+      preLoaderRoute: typeof HandsImport
+      parentRoute: typeof rootRoute
+    }
     '/login': {
       preLoaderRoute: typeof LoginImport
       parentRoute: typeof rootRoute
@@ -138,6 +148,7 @@ declare module '@tanstack/react-router' {
 export const routeTree = rootRoute.addChildren([
   IndexRoute,
   AboutRoute,
+  HandsRoute,
   LoginRoute,
   ProductsRoute.addChildren([
     ProductsModulesRoute.addChildren([

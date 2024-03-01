@@ -5,6 +5,7 @@ import { Database } from "./stacks/Database";
 import { Web } from "./stacks/Web";
 import { Marketing } from "./stacks/Marketing";
 import { DNS } from "./stacks/Dns";
+import { Bucket } from "./stacks/Bucket";
 
 export default {
   config(_input) {
@@ -21,6 +22,7 @@ export default {
     app
       .stack(DNS)
       .stack(Database)
+      .stack(Bucket)
       .stack(Api)
       .stack(Web)
       .stack(Marketing)

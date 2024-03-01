@@ -12,6 +12,9 @@ export const LeftNavigation = () => {
       <Link to="/products" className="[&.active]:font-bold">
         Products
       </Link>
+      <Link to="/hands" className="[&.active]:font-bold">
+        Hands
+      </Link>
     </div>
   );
 };

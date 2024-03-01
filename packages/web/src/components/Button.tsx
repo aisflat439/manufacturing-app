@@ -7,7 +7,7 @@ type ButtonProps = {
   id?: string;
   modification?: "contained" | "outlined" | "text";
   size?: "small" | "medium" | "large";
-  type?: "button" | "submit" | "reset";
+  type?: "button" | "submit" | "reset" | "input";
   variant?: Variant;
 } & (
   | {
@@ -26,6 +26,12 @@ type ButtonProps = {
       href?: never;
       type: "submit";
       onClick?: never;
+    }
+  | {
+      as?: "input";
+      href?: never;
+      onClick: (event: React.ChangeEvent<HTMLInputElement>) => void;
+      type: "input";
     }
 );
 
@@ -112,17 +118,32 @@ export const Button = ({
   // [--color-to:theme(colors.green.300)]
   // bg-green-300
 
-  return as === "button" ? (
-    <button
-      id={id}
-      onClick={onClick}
-      className={classes}
-      type={type}
-      disabled={disabled}
-    >
-      {children}
-    </button>
-  ) : (
+  if (as === "button") {
+    return (
+      <button
+        id={id}
+        onClick={onClick}
+        className={classes}
+        type={type}
+        disabled={disabled}
+      >
+        {children}
+      </button>
+    );
+  }
+
+  if (as === "input") {
+    return (
+      <input
+        id={id}
+        onChange={onClick}
+        className={classes}
+        type="file"
+        disabled={disabled}
+      />
+    );
+  }
+  return (
     <a className={classes} href={href} rel="noreferrer">
       {children}
     </a>

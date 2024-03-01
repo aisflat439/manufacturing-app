@@ -14,6 +14,12 @@ import {
   updatePart,
 } from "@manufacturing-app/core/src/part";
 
+import {
+  ModuleCreateSchema,
+  ModuleEntitySchema,
+  createModule,
+} from "@manufacturing-app/core/src/module";
+
 const appRouter = t.router({
   getUser: t.procedure.input(z.string()).query(async ({ input }) => {
     return { id: input, name: "bob" };
@@ -33,6 +39,11 @@ const appRouter = t.router({
   delete: t.procedure.input(z.string()).mutation(async ({ input }) => {
     return await deletePart(input);
   }),
+  createModule: t.procedure
+    .input(ModuleCreateSchema)
+    .mutation(async ({ input }) => {
+      return await createModule(input);
+    }),
 });
 
 // export type definition of API

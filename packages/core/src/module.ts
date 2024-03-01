@@ -20,16 +20,41 @@ export const ModuleEntity = new Entity(
         type: "string",
         required: true,
       },
+      partId: {
+        type: "string",
+      },
     },
     indexes: {
       module: {
-        collection: "module",
         pk: {
           field: "pk",
           composite: [],
         },
         sk: {
           field: "sk",
+          composite: ["moduleId"],
+        },
+      },
+      modulesPart: {
+        collection: ["moduleParts"],
+        index: "gsi1pk-gsi1sk-index",
+        pk: {
+          field: "gsi1pk",
+          composite: ["moduleId"],
+        },
+        sk: {
+          field: "gsi1sk",
+          composite: ["partId"],
+        },
+      },
+      modulesSubmodule: {
+        index: "gsi2pk-gsi2sk-index",
+        pk: {
+          field: "gsi2pk",
+          composite: ["moduleId"],
+        },
+        sk: {
+          field: "gsi2sk",
           composite: ["moduleId"],
         },
       },
@@ -43,16 +68,23 @@ export type ModuleEntityType = EntityItem<typeof ModuleEntity>;
 export const ModuleEntitySchema = z.object({
   moduleId: z.string(),
   name: z.string(),
-  quantity: z.number().optional(),
+  partId: z.array(z.string()),
 });
 
-export type CreateSchema = z.infer<typeof ModuleEntitySchema>;
+export const ModuleCreateSchema = z.object({
+  name: z.string(),
+  partId: z.array(z.string()),
+});
+
+export type CreateSchema = z.infer<typeof ModuleCreateSchema>;
 
 export async function createModule(data: CreateSchema) {
-  return ModuleEntity.create({
-    name: data.name,
-    moduleId: data.moduleId,
-  }).go();
+  const parts = data.partId.map((partId) => partId);
+  const moduleId = ulid();
+
+  return ModuleEntity.put(
+    parts.map((partId) => ({ name: data.name, moduleId, partId }))
+  ).go();
 }
 
 export async function getModule(id: string) {
